@@ -1,0 +1,34 @@
+.history {
+  width: 870px;
+  margin: auto;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #ebeef2;
+  text-transform: uppercase;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 30px 0;
+  min-width: 290px;
+}
+
+th:nth-child(2) {
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+}
+
+td {
+  color: #5c6975;
+  border-top: 1px solid #ebeef2;
+}
+
+td:nth-child(2) {
+  border-left: 1px solid #ebeef2;
+  border-right: 1px solid #ebeef2;
+}

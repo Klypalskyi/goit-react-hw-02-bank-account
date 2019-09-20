@@ -1,0 +1,17 @@
+.balanceBox {
+  display: flex;
+  max-width: 400px;
+  justify-content: space-between;
+  margin: auto;
+  color: #5c6975;
+  font-weight: bold;
+  margin-bottom: 39px;
+}
+
+.depositArrow {
+  color: #96c562;
+}
+
+.withdrawArrow {
+  color: #e73439;
+}
