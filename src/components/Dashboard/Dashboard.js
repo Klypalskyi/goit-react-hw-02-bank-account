@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import TransactionHistory from '../TransactionHistory/TransactionHistory';
 import Controls from '../Controls/Controls';
 import Balance from '../Balance/Balance';
+import 'react-toastify/dist/ReactToastify.css';
 
 const shortid = require('shortid');
 
@@ -51,19 +53,30 @@ class Dashboard extends Component {
   createTransaction = e => {
     const { target } = e;
     const { amount } = this.state;
-    const transaction = {
-      id: shortid.generate(),
-      type: target.value,
-      amount,
-      date: new Date().toLocaleString(),
-    };
-    this.setState(prev => ({
-      id: '',
-      type: '',
-      amount: '',
-      date: '',
-      transactions: [...prev.transactions, transaction],
-    }));
+    if (amount <= 0) {
+      toast.error('Amount must be more then 0', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } else {
+      const transaction = {
+        id: shortid.generate(),
+        type: target.value,
+        amount,
+        date: new Date().toLocaleString(),
+      };
+      this.setState(prev => ({
+        id: '',
+        type: '',
+        amount: '',
+        date: '',
+        transactions: [...prev.transactions, transaction],
+      }));
+    }
   };
 
   inputChange = e => {
@@ -92,6 +105,17 @@ class Dashboard extends Component {
           withdraw={totalWithdraw}
         />
         <TransactionHistory transactions={transactions} />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange
+          draggable
+          pauseOnHover
+        />
       </div>
     );
   }

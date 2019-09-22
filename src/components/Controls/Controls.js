@@ -9,6 +9,7 @@ const Controls = ({ amount, createTransaction, inputChange }) => (
       value={amount}
       className={styles.input}
       name="amount"
+      placeholder="Enter your amount"
       onChange={inputChange}
     />
     <button
