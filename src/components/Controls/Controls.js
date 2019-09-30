@@ -15,6 +15,7 @@ const Controls = ({ amount, createTransaction, inputChange }) => (
     <button
       type="button"
       value="Deposit"
+      name="Deposit"
       className={styles.button}
       onClick={createTransaction}
     >
@@ -23,6 +24,7 @@ const Controls = ({ amount, createTransaction, inputChange }) => (
     <button
       type="button"
       value="Withdraw"
+      name="Withdraw"
       className={styles.button}
       onClick={createTransaction}
     >
@@ -32,7 +34,7 @@ const Controls = ({ amount, createTransaction, inputChange }) => (
 );
 
 Controls.propTypes = {
-  amount: PropTypes.number.isRequired,
+  amount: PropTypes.string.isRequired,
   createTransaction: PropTypes.func.isRequired,
   inputChange: PropTypes.func.isRequired,
 };

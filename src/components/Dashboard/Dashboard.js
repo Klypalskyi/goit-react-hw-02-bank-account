@@ -9,51 +9,19 @@ const shortid = require('shortid');
 
 class Dashboard extends Component {
   state = {
-    id: '',
     type: '',
     amount: '',
     date: '',
     transactions: [],
-    balance: 0,
     totalDeposit: 0,
     totalWithdraw: 0,
   };
 
-  componentDidMount() {
-    const { transactions, totalDeposit, totalWithdraw } = this.state;
-    this.setState({
-      totalDeposit: transactions
-        .filter(transaction => transaction.type === 'Deposit')
-        .reduce((acc, transaction) => acc + transaction.amount, 0),
-      totalWithdraw: transactions
-        .filter(transaction => transaction.type === 'Withdraw')
-        .reduce((acc, transaction) => acc + transaction.amount, 0),
-      balance: totalDeposit - totalWithdraw,
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { transactions } = this.state;
-    const newTotalDeposit = transactions
-      .filter(transaction => transaction.type === 'Deposit')
-      .reduce((acc, transaction) => acc + transaction.amount, 0);
-    const newTotalWithdraw = transactions
-      .filter(transaction => transaction.type === 'Withdraw')
-      .reduce((acc, transaction) => acc + transaction.amount, 0);
-    const newBalance = newTotalDeposit - newTotalWithdraw;
-    if (transactions.length !== prevState.transactions.length) {
-      this.setState({
-        totalDeposit: newTotalDeposit,
-        totalWithdraw: newTotalWithdraw,
-        balance: newBalance,
-      });
-    }
-  }
-
   createTransaction = e => {
     const { target } = e;
     const { amount } = this.state;
-    if (amount <= 0) {
+    const newAmount = +amount;
+    if (newAmount <= 0) {
       toast.error('Amount must be more then 0', {
         position: 'bottom-right',
         autoClose: 2000,
@@ -65,23 +33,38 @@ class Dashboard extends Component {
     } else {
       const transaction = {
         id: shortid.generate(),
-        type: target.value,
-        amount,
+        type: target.name,
+        amount: newAmount,
         date: new Date().toLocaleString(),
       };
-      this.setState(prev => ({
-        id: '',
-        type: '',
-        amount: '',
-        date: '',
-        transactions: [...prev.transactions, transaction],
-      }));
+      if (transaction.type === 'Deposit') {
+        this.setState(prev => ({
+          id: '',
+          type: '',
+          amount: '',
+          date: '',
+          transactions: [...prev.transactions, transaction],
+          totalDeposit: prev.totalDeposit + transaction.amount,
+          balance: prev.totalDeposit + transaction.amount - prev.totalWithdraw,
+        }));
+      }
+      if (transaction.type === 'Withdraw') {
+        this.setState(prev => ({
+          id: '',
+          type: '',
+          amount: '',
+          date: '',
+          transactions: [...prev.transactions, transaction],
+          totalWithdraw: prev.totalWithdraw + transaction.amount,
+          balance: prev.totalDeposit - transaction.amount - prev.totalWithdraw,
+        }));
+      }
     }
   };
 
   inputChange = e => {
     const { value, name } = e.target;
-    this.setState({ [name]: +value });
+    this.setState({ [name]: value });
   };
 
   render() {
